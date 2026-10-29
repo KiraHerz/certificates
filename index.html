@@ -320,7 +320,6 @@ function render(){
   cert.style.background = d.bg;
   cert.innerHTML = html;
   fit(cert, d);
-  document.documentElement.style.setProperty('--accent', d.color === '#000000' ? '#16171a' : d.color);
   $('metaName').textContent = `${state.first} ${state.last} · ${d.pill}`.trim();
   $('genderSeg').hidden = state.lang !== 'ru';
   $('achGroup').hidden = !isAI;
