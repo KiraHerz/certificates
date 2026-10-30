@@ -291,7 +291,7 @@ function render(){
 
   const html = `
     <div class="a c-name" id="cName" style="left:24px;top:${v.nameTop}px"><span id="n1">${esc(state.first || ' ')}</span><br><span id="n2">${esc(state.last || ' ')}</span></div>
-    <div class="a c-intro" style="left:${v.introLeft}px;top:${v.introTop}px;width:${v.introW}px">
+    <div class="a c-intro" id="cIntro" style="left:${v.introLeft}px;top:${v.introTop}px;width:${v.introW}px">
       <p>${esc(L.intro(d, state.gender))}</p>
       <div class="c-pill" style="background:${d.color}">${esc(d.pill)}</div>
     </div>
@@ -333,6 +333,12 @@ function fit(root, d){
   let fs = 100;
   name.style.fontSize = fs + 'px';
   while (fs > 44 && (n1.offsetWidth > max1 || n2.offsetWidth > max2)) { fs -= 2; name.style.fontSize = fs + 'px'; }
+  /* the intro line stays on two lines: widen its box (up to the logo) until it fits */
+  const intro = root.querySelector('#cIntro'), introP = intro.querySelector('p');
+  let iw = v.introW;
+  const maxW = 740 - v.introLeft, twoLines = 24 * 1.2 * 2 + 2;
+  intro.style.width = iw + 'px';
+  while (introP.offsetHeight > twoLines && iw < maxW) { iw = Math.min(maxW, iw + 10); intro.style.width = iw + 'px'; }
   /* if module titles wrap more than in the template, push the lower sections down instead of overlapping */
   const shift = (sel, delta) => { if (delta > 0) root.querySelectorAll(sel).forEach(el => { el.style.top = (parseFloat(el.style.top) + delta) + 'px'; }); };
   const bottomOf = sel => Math.max(0, ...[...root.querySelectorAll(sel)].map(el => el.offsetTop + el.offsetHeight));
